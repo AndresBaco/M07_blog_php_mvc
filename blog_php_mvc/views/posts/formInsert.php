@@ -1,4 +1,4 @@
-<form method="post" action="?controller=posts&action=insert" enctype="multipart/form-data">
+<form method="post" action="?controller=posts&action=insert" enctype="multipart/form-data"> <!--Funcio per crear un nou post -->
     <label for="title">Títol:</label><br />
     <input type="text" id="title" name="title"><br>
 

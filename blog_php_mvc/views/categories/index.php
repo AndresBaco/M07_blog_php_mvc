@@ -1,4 +1,4 @@
-<p><strong>Listat de categories:</strong></p>
+<p><strong>Listat de categories:</strong></p> 
 <table class="tabla" style='width:100%'> <!-- La taula del menú comença aquí -->
 			<tr class="title">
 				<th> Categoria </th>

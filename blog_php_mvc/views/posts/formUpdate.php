@@ -1,4 +1,4 @@
-<form method="post" action="?controller=posts&action=update" enctype="multipart/form-data">
+<form method="post" action="?controller=posts&action=update" enctype="multipart/form-data"><!--Funcio per actualitzar post -->
     <h3> Post nº<?php echo $post->id; ?> </h3>
     
     <input type="hidden" id="id" name="id" value= "<?php echo $post->id; ?>">

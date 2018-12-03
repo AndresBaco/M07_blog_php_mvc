@@ -1,4 +1,4 @@
-<form method="post" action="?controller=category&action=update">
+<form method="post" action="?controller=category&action=update"> <!-- Formulari per actualitzar una categoria -->
     
     <input type="hidden" id="id" name="id" value= "<?php echo $category->categoria; ?>">
 

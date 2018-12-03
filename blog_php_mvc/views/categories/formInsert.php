@@ -1,4 +1,4 @@
-<form method="post" action="?controller=category&action=insert" >
+<form method="post" action="?controller=category&action=insert" > <!--Formulari per insertar una nova categoria -->
     <label for="categoria">Categoria:</label><br />
     <input type="text" id="categoria" name="categoria"><br>
 

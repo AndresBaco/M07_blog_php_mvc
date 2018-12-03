@@ -23,12 +23,12 @@ class CategoryController { //He creat una classe completament nova amb les funci
     call('category', 'index');
      
  }
- public function delete(){
+ public function delete(){ //Funcio per esborrar una categoria
      $delete=Category::delete();
      call('category', 'index');
  }
     
-public function formUpdate(){
+public function formUpdate(){ //Funcio que truca al formulari per actualitzar categories
      if (!isset($_GET['categoria'])) {
         return call('pages', 'error');
      }
@@ -36,7 +36,7 @@ public function formUpdate(){
 	 $category = Category::find($_GET['categoria']);
 	 require_once('views/categories/formUpdate.php');
  }
-public function update(){
+public function update(){ //Funcio que actualitza les categories
     $update=Category::update();
     call('category', 'index');
 }

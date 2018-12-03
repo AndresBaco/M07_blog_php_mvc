@@ -7,7 +7,10 @@
 
     <label for="nom">Contingut:</label><br />
     <textarea name="content" rows="10" cols="30" ></textarea><br>
-
+    
+    <label for="nom">Categoria:</label><br />
+    <input type="text" id="categoria" name="categoria"><br>
+    
     <label for="nom">Foto:</label><br />
     <input name="foto" type="file" id="foto"><br /><br />
 

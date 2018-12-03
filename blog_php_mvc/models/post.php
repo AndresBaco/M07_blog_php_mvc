@@ -20,14 +20,14 @@ class Post {
 	 $list = [];
 	 $db = Db::getInstance();
 	 $req = $db->query('SELECT * FROM posts');
-
+     
 	 // creamos una lista de objectos post y recorremos la respuesta de la consulta
 	 foreach($req->fetchAll() as $post) {
 		$list[] = new Post($post['id'], $post['author'], $post['content'],$post['title'], $post['dataAlta'], $post['dataModificacio'], $post['foto']);
 	 }
 	 return $list;
  }
-    
+
 
  public static function find($id) {
 	 $db = Db::getInstance();
@@ -40,32 +40,32 @@ class Post {
 	 return new Post($post['id'], $post['author'], $post['content'],$post['title'], $post['dataAlta'], $post['dataModificacio'], $post['foto']);
  }
     
- public static function insert() {
-    //$foto= $_FILES["foto"]["tmp_name"];
-    //$nombrefoto  = $_FILES["foto"]["name"];
-    //este es el archivo que añadiremosal campo blob
-    //$foto  = $_FILES['foto']['tmp_name'];
-    //lo comvertimos en binario antes de guardarlo
-     
-    //$foto=file_get_contents($_FILES["foto"]["tmp_name"]);
-    //$foto= "'".$foto."'";
+ public static function insert() { //Funcio per insertar un nou post
     $db = Db::getInstance();
      
-    $author=$_POST['author'];
+    $author=$_POST['author']; //declarem les variables
     $content=$_POST['content'];
     $title=$_POST['title'];
-    $foto=htmlspecialchars(strip_tags($_FILES['foto']['tmp_name'])); 
+    $categoria=$_POST['categoria'];
+    $foto=htmlspecialchars(strip_tags($_FILES['foto']['tmp_name'])); //Per a la foto, treiem els caràcters especials
      
-    $foto=!empty($_FILES["foto"]["name"])
+    $foto=!empty($_FILES["foto"]["name"]) 
         ? sha1_file($_FILES['foto']['tmp_name']) . "-" . basename($_FILES["foto"]["name"]) : "";
     
-    $req = $db->prepare("INSERT into posts(author,content, title, foto) VALUES (:author, :content,:title, :foto)");
-    $req->bindParam(':author', $author);
+    $req = $db->prepare("INSERT into posts(author,content, title, foto, categoria) VALUES (:author, :content,:title, :foto, :categoria)"); //Preparem la comanda
+    $req->bindParam(':author', $author); 
     $req->bindParam(':content', $content);     
     $req->bindParam(':title', $title);
-    $req->bindParam(':foto', $foto);    
-    if($req->execute()){
+    $req->bindParam(':foto', $foto);  
+    $req->bindParam(':categoria', $categoria);  
+    if($req->execute()){ //Si es crea el post, sortirà un missatge d'èxit i realitzara una funcio per poder pujar la foto
         echo "<div class='alert alert-success'>S'ha creat el producte</div>";
+        
+        //Aquesta funció està reciclada de la pràctica anterior
+        
+        // PROBLEMA: sense saber perquè, aquesta funció no em deixaba posar-la a una funció apart. És per això que està dins de insert i update i està duplicada
+        
+        
         // try to upload the submitted file
         // uploadPhoto() method will return an error message, if any.
         //echo uploadPhoto();
@@ -144,18 +144,15 @@ class Post {
     }
 
  }
- public static function update(){
-    //$foto= $_FILES["foto"]["tmp_name"];
-    //$nombrefoto  = $_FILES["foto"]["name"];
-    //este es el archivo que añadiremosal campo blob
-    //$foto  = $_FILES['foto']['tmp_name'];
-    //lo comvertimos en binario antes de guardarlo
-    $author=$_POST['author'];
+
+ public static function update(){ //Funcio per actualitzar un post
+    $author=$_POST['author']; //Fem el mateix procés que a insert: Declarem variables
     $content=$_POST['content'];
     $title=$_POST['title'];
     $fecha = new DateTime();
-    $fecha=$fecha->getTimestamp();
+    $fecha=$fecha->getTimestamp(); //Posarem la data d'última modificació com el mateix instant en el que s'executa aquestà funció
     $id=$_POST['id'];
+    $categoria=$_POST['categoria']; 
     $foto=htmlspecialchars(strip_tags($_FILES['foto']['tmp_name'])); 
      
     $foto=!empty($_FILES["foto"]["name"])
@@ -163,15 +160,16 @@ class Post {
      
     $db = Db::getInstance();
     
-    $req = $db->prepare("UPDATE posts set author=:author, content=:content, title=:title, dataModificacio=:data, foto=:foto 
-                         WHERE id= :id ");
+    $req = $db->prepare("UPDATE posts set author=:author, content=:content, title=:title, dataModificacio=:data,                                                 foto=:foto, categoria=:categoria 
+                                      WHERE id= :id "); //Preparem la comanda
     $req->bindParam(':author', $author);
     $req->bindParam(':content', $content);     
     $req->bindParam(':title', $title);
     $req->bindParam(':data', $fecha);
     $req->bindParam(':foto', $foto); 
     $req->bindParam(':id', $id);
-    if($req->execute()){
+    $req->bindParam(':categoria', $categoria);  
+    if($req->execute()){ //fem el mteix proces per insertar la foto al BBDD
         echo "<div class='alert alert-success'>S'ha creat el producte</div>";
         // try to upload the submitted file
         // uploadPhoto() method will return an error message, if any.
@@ -250,13 +248,13 @@ class Post {
         echo "<div class='alert alert-danger'>No s'ha pogut crear el producte</div>";
     }
  }
- public static function delete() {
-    $db = Db::getInstance();
-    $id= $_GET['id'];
+ public static function delete() { //Funcio per esborrar un post
+    $db = Db::getInstance(); 
+    $id= $_GET['id']; //Aqui només fa falta declarar la id
 	// nos aseguramos que $id es un entero
-	$req = $db->prepare('DELETE FROM posts WHERE id = :id');
+	$req = $db->prepare('DELETE FROM posts WHERE id = :id'); //Preparem la comanda
     $req->bindParam(':id', $id);
-    $req->execute();
+    $req->execute(); //Executem i tornem a index.php
  }
 }
 
